@@ -6,26 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTK</title>
     <style>
-        div {
-            text-align: center;
-            width: fit-content;
-            height: fit-content;
-            font-size: larger;
-            position: absolute;
-            top:0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        body {
+            margin: 0;
             font-family: monospace;
-            
-            margin: auto;
+            font-size: larger;
+        }
+        main {
+            box-sizing: border-box;
+            max-width: 52rem;
+            margin: 0 auto;
+            padding: 2.5rem 1rem 2rem;
+            text-align: center;
         }
         a {
             text-decoration: none;
         }
-        a.resume {
+        a.button {
             display: inline-block;
-            margin-top: 0.75rem;
+            margin: 0.35rem 0.4rem;
             padding: 0.35rem 0.9rem;
             border: 1px solid;
         }
@@ -33,15 +31,74 @@
             margin-bottom: 0.25rem;
             font-weight: bold;
         }
-
-      
+        .resume-label {
+            margin: 1.25rem 0 0.35rem;
+            font-weight: bold;
+        }
+        .resume-preview {
+            width: 100%;
+            margin: 1rem auto 0;
+            aspect-ratio: 8.5 / 11;
+            min-height: 28rem;
+            border: 1px solid;
+        }
+        .resume-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        .resume-fallback {
+            margin-top: 0.75rem;
+        }
+        @media (max-width: 700px) {
+            .resume-preview {
+                aspect-ratio: auto;
+                height: 78vh;
+                min-height: 36rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <main>
         <p class="availability">Immediate joiner</p>
         <p>I don't have a website/portfolio, check my <a href="https://github.com/ritiksoni00">Github</a> / <a href="https://www.upwork.com/freelancers/~0156452ef46a60c7b5">Upwork</a> out.</p>
-        <p><a class="resume" href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a></p>
-    </div>
+        <section class="resume" aria-label="Resume">
+            <p class="resume-label">Resume</p>
+            <p>
+                <a id="resume-view" class="button" target="_blank" rel="noopener noreferrer">View</a>
+                <a id="resume-download" class="button" target="_blank" rel="noopener noreferrer">Download</a>
+            </p>
+            <p class="resume-fallback"><a id="resume-open" target="_blank" rel="noopener noreferrer">Open in Google Drive</a></p>
+            <div class="resume-preview">
+                <iframe id="resume-frame" title="Ritik Soni resume preview" allow="fullscreen">
+                    <p><a id="resume-frame-fallback" target="_blank" rel="noopener noreferrer">Open in Google Drive</a></p>
+                </iframe>
+            </div>
+        </section>
+    </main>
+    <script src="resume-config.js"></script>
+    <script>
+        (function () {
+            var fileId = window.RESUME_DRIVE_FILE_ID;
+            if (!fileId) return;
+            var viewUrl = "https://drive.google.com/file/d/" + encodeURIComponent(fileId) + "/view";
+            var previewUrl = "https://drive.google.com/file/d/" + encodeURIComponent(fileId) + "/preview";
+            var downloadUrl = "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(fileId);
+
+            var view = document.getElementById("resume-view");
+            var download = document.getElementById("resume-download");
+            var open = document.getElementById("resume-open");
+            var frameFallback = document.getElementById("resume-frame-fallback");
+            var frame = document.getElementById("resume-frame");
+
+            if (view) view.href = viewUrl;
+            if (download) download.href = downloadUrl;
+            if (open) open.href = viewUrl;
+            if (frameFallback) frameFallback.href = viewUrl;
+            if (frame) frame.src = previewUrl;
+        })();
+    </script>
 </body>
 </html>
